@@ -138,7 +138,7 @@ open class Cache<T: DataConvertible> where T.Result == T, T : DataRepresentable 
                 group.leave()
             }
         }
-        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async {
+        DispatchQueue.global(qos: .default).async {
             let timeout = DispatchTime.now() + Double(Int64(60 * NSEC_PER_SEC)) / Double(NSEC_PER_SEC)
             if group.wait(timeout: timeout) != 0 {
                 Log.error("removeAll timed out waiting for disk caches")
@@ -227,7 +227,7 @@ open class Cache<T: DataConvertible> where T.Result == T, T : DataRepresentable 
                 }
             }
         }) { data in
-            DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async(execute: {
+            DispatchQueue.global(qos: .default).async(execute: {
                 let value = T.convertFromData(data)
                 if let value = value {
                     let descompressedValue = self.decompressedImageIfNeeded(value)
@@ -254,7 +254,7 @@ open class Cache<T: DataConvertible> where T.Result == T, T : DataRepresentable 
         if format.isIdentity && !(value is UIImage) {
             succeed(value)
         } else {
-            DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async {
+            DispatchQueue.global(qos: .default).async {
                 var formatted = format.apply(value)
                 
                 if let formattedImage = formatted as? UIImage {

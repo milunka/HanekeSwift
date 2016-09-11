@@ -84,7 +84,7 @@ public enum JSON : DataConvertible, DataRepresentable {
     
     public static func convertFromData(_ data: Data) -> Result? {
         do {
-            let object : AnyObject = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions())
+            let object : Any = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions())
             switch (object) {
             case let dictionary as [String:AnyObject]:
                 return JSON.Dictionary(dictionary)
