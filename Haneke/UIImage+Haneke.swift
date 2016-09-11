@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreGraphics
 
 extension UIImage {
 
@@ -20,11 +21,11 @@ extension UIImage {
 
     func hnk_hasAlpha() -> Bool {
         let alpha = self.cgImage?.alphaInfo
-        switch alpha {
-        case .first, .last, .premultipliedFirst, .premultipliedLast, .alphaOnly:
-            return true
-        case .none, .noneSkipFirst, .noneSkipLast:
-            return false
+        switch alpha {            
+            case .first, .last, .premultipliedFirst, .premultipliedLast, .alphaOnly:
+                return true
+            case .none, .noneSkipFirst, .noneSkipLast:
+                return false
         }
     }
     

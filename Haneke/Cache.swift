@@ -182,7 +182,7 @@ open class Cache<T: DataConvertible> where T.Result == T, T : DataRepresentable 
     open func addFormat(_ format : Format<T>) {
         let name = format.name
         let formatPath = self.formatPath(formatName: name)
-        let memoryCache = NSCache()
+        let memoryCache = NSCache<AnyObject, AnyObject>()
         let diskCache = DiskCache(path: formatPath, capacity : format.diskCapacity)
         self.formats[name] = (format, memoryCache, diskCache)
     }
@@ -234,7 +234,7 @@ open class Cache<T: DataConvertible> where T.Result == T, T : DataRepresentable 
                     DispatchQueue.main.async(execute: {
                         succeed(descompressedValue)
                         let wrapper = ObjectWrapper(value: descompressedValue)
-                        memoryCache.setObject(wrapper, forKey: key)
+                        memoryCache.setObject(wrapper, forKey: key as AnyObject)
                     })
                 }
             })
