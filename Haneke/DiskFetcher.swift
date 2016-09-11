@@ -34,9 +34,8 @@ public class DiskFetcher<T : DataConvertible> : Fetcher<T> {
     
     // MARK: Fetcher
     
-    public override func fetch(failure fail: @escaping ((NSError?) -> ()), success succeed: @escaping (T.Result) -> ()) {
+    override public func fetch(failure fail: @escaping ((NSError?) -> ()), success succeed: @escaping (T.Result) -> ()) {
         self.cancelled = false
-
         DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async { [weak self] in
             if let strongSelf = self {
                 strongSelf.privateFetch(failure: fail, success: succeed)
