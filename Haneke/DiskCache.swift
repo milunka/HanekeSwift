@@ -45,7 +45,7 @@ public class DiskCache {
         })
     }
     
-    public func setData( getData: @autoclosure(escaping) () -> Data?, key: String) {
+    public func setData( getData: @autoclosure @escaping () -> Data?, key: String) {
         self.cacheQueue.async(execute:{
             if let data = getData() {
                 self.setDataSync(data: data, key: key)
@@ -55,7 +55,7 @@ public class DiskCache {
         })
     }
     
-    public func fetchData(key key: String, failure fail: ((NSError?) -> ())? = nil, success succeed: @escaping(NSData) -> ()) {
+    public func fetchData(key: String, failure fail: ((NSError?) -> ())? = nil, success succeed: @escaping(NSData) -> ()) {
         self.cacheQueue.async {
             let path = self.pathForKey(key: key)
             do {
@@ -102,7 +102,7 @@ public class DiskCache {
         })
     }
 
-    public func updateAccessDate( getData: @autoclosure(escaping) () -> Data?, key: String) {
+    public func updateAccessDate( getData: @autoclosure @escaping () -> Data?, key: String) {
         cacheQueue.async(execute: {
             let path = self.pathForKey(key: key)
             let fileManager = FileManager.default

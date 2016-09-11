@@ -42,7 +42,7 @@ public class NetworkFetcher<T : DataConvertible> : Fetcher<T> {
     
     // MARK: Fetcher
     
-    public override func fetch(failure fail : ((NSError?) -> ()), success succeed : @escaping (T.Result) -> ()) {
+    public override func fetch(failure fail : @escaping ((NSError?) -> ()), success succeed : @escaping (T.Result) -> ()) {
         self.cancelled = false
         self.task = self.session.dataTask(with: self.URL as URL) {[weak self] (data, response, error) -> Void in
             if let strongSelf = self {
@@ -59,7 +59,7 @@ public class NetworkFetcher<T : DataConvertible> : Fetcher<T> {
     
     // MARK: Private
     
-    private func onReceiveData(data: NSData!, response: URLResponse!, error: NSError!, failure fail: ((NSError?) -> ()), success succeed: @escaping (T.Result) -> ()) {
+    private func onReceiveData(data: NSData!, response: URLResponse!, error: NSError!, failure fail: @escaping ((NSError?) -> ()), success succeed: @escaping (T.Result) -> ()) {
 
         if cancelled { return }
         
@@ -97,7 +97,7 @@ public class NetworkFetcher<T : DataConvertible> : Fetcher<T> {
 
     }
     
-    private func failWithCode(code: HanekeGlobals.NetworkFetcher.ErrorCode, localizedDescription: String, failure fail: ((NSError?) -> ())) {
+    private func failWithCode(code: HanekeGlobals.NetworkFetcher.ErrorCode, localizedDescription: String, failure fail: @escaping ((NSError?) -> ())) {
         let error = errorWithCode(code: code.rawValue, description: localizedDescription)
         Log.debug(message: localizedDescription, error: error)
         DispatchQueue.main.async { fail(error) }
