@@ -104,7 +104,7 @@ public class Cache<T: DataConvertible> where T.Result == T, T : DataRepresentabl
     public func fetch(fetcher : Fetcher<T>, formatName: String = HanekeGlobals.Cache.OriginalFormatName, failure fail : Fetch<T>.Failer? = nil, success succeed : Fetch<T>.Succeeder? = nil) -> Fetch<T> {
         let key = fetcher.key
         let fetch = Cache.buildFetch(failure: fail, success: succeed)
-        self.fetch(key: key, formatName: formatName, failure: { error in
+        _ = self.fetch(key: key, formatName: formatName, failure: { error in
             if error?.code == HanekeGlobals.Cache.ErrorCode.FormatNotFound.rawValue {
                 fetch.fail(error: error)
             }
@@ -254,10 +254,10 @@ public class Cache<T: DataConvertible> where T.Result == T, T : DataRepresentabl
     private class func buildFetch(failure fail : Fetch<T>.Failer? = nil, success succeed : Fetch<T>.Succeeder? = nil) -> Fetch<T> {
         let fetch = Fetch<T>()
         if let succeed = succeed {
-            fetch.onSuccess(onSuccess: succeed)
+            _ = fetch.onSuccess(onSuccess: succeed)
         }
         if let fail = fail {
-            fetch.onFailure(onFailure: fail)
+            _ = fetch.onFailure(onFailure: fail)
         }
         return fetch
     }

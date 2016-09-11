@@ -63,7 +63,7 @@ public class DiskCache {
                 DispatchQueue.main.async {
                     succeed(data)
                 }
-                self.updateDiskAccessDateAtPath(path: path)
+                _ = self.updateDiskAccessDateAtPath(path: path)
             } catch {
                 if let block = fail {
                     DispatchQueue.main.async {
@@ -134,8 +134,8 @@ public class DiskCache {
             for pathComponent in contents {
                 let path = (cachePath as NSString).appendingPathComponent(pathComponent)
                 do {
-                    let attributes = try fileManager.attributesOfItem(atPath: path) as? NSDictionary
-                    size += (attributes?.fileSize())!
+                    let attributes = try fileManager.attributesOfItem(atPath: path) as NSDictionary
+                    size += (attributes.fileSize())
                 } catch {
                     Log.error(message: "Failed to read file size of \(path)", error: error as NSError)
                 }
@@ -164,7 +164,7 @@ public class DiskCache {
     private func setDataSync(data: Data, key: String) {
         let path = self.pathForKey(key: key)
         let fileManager = FileManager.default
-        let previousAttributes = try? fileManager.attributesOfItem(atPath: path) as? NSDictionary
+        let previousAttributes = try? fileManager.attributesOfItem(atPath: path) as NSDictionary
 
         do {
             try data.write(to: URL.init(fileURLWithPath: path)) // .write(toFile: path, options: NSData.WritingOptions.atomicWrite)
@@ -173,7 +173,7 @@ public class DiskCache {
         }
         
         if let attributes = previousAttributes {
-            self.size -= (attributes?.fileSize())!
+            self.size -= (attributes.fileSize())
         }
         self.size += UInt64(data.count)
         self.controlCapacity()
@@ -194,11 +194,11 @@ public class DiskCache {
     private func removeFileAtPath(path: String) {
         let fileManager = FileManager.default
         do {
-            let attributes =  try fileManager.attributesOfItem(atPath: path) as? NSDictionary
-            let fileSize = attributes?.fileSize()
+            let attributes =  try fileManager.attributesOfItem(atPath: path) as NSDictionary
+            let fileSize = attributes.fileSize()
             do {
                 try fileManager.removeItem(atPath: path)
-                self.size -= fileSize!
+                self.size -= fileSize
             } catch {
                 Log.error(message: "Failed to remove file", error: error as NSError)
             }
